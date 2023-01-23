@@ -1,0 +1,22 @@
+name: Build firefox xpi
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1
+      with:
+        extensionDir: 'src'
+        zipFilePath: 'build/kitingkeys.zip'
+    - uses: cardinalby/webext-buildtools-firefox-sign-xpi-action@v1
+      with:
+        zipFilePath: 'build/kitingkeys.zip'
+        xpiFilePath: 'build/kiting.signed.xpi'
+        jwtIssuer: ${{ secrets.FF_JWT_ISSUER }}
+        jwtSecret: ${{ secrets.FF_JWT_SECRET }}
