@@ -56,7 +56,7 @@
     ],
     "background": {
         "scripts": [
-            "background.js"
+            "background/start.js"
         ]
     },
     "content_scripts": [
@@ -66,10 +66,10 @@
             ],
             "match_about_blank": true,
             "js": [
-                "content.js"
+                "content_scripts/content.js"
             ],
             "css": [
-                "content.css"
+                "content_scripts/content.css"
             ],
             "run_at": "document_start",
             "all_frames": true
