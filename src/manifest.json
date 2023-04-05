@@ -29,7 +29,7 @@
     "browser_specific_settings": {
         "gecko": {
           "id": "kitingkeys@water.flow",
-          "strict_min_version": "42.0"
+          "strict_min_version": "100.0"
         }
       },
     "browser_action": {
