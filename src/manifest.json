@@ -26,6 +26,12 @@
             "description": "Toggle current site in autoproxy_hosts."
         }
     },
+    "browser_specific_settings": {
+        "gecko": {
+          "id": "kitingkeys@water.flow",
+          "strict_min_version": "42.0"
+        }
+      },
     "browser_action": {
         "default_icon": {
             "16": "icons/16.png",
