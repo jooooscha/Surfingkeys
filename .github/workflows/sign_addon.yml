@@ -29,7 +29,7 @@ jobs:
           channel: unlisted
           apiKey: ${{ secrets.FF_JWT_ISSUER }}
           apiSecret: ${{ secrets.FF_JWT_SECRET }}
-          timeout: 900000
+          timeout: 1800000
 
       - name: "Create Release"
         uses: softprops/action-gh-release@v1
