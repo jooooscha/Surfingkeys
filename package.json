@@ -1,7 +1,7 @@
 {
-  "name": "Surfingkeys",
+  "name": "Kitingkeys",
   "version": "1.12.2",
-  "description": "Map your keys for web surfing, expand your browser with javascript and keyboard.",
+  "description": "Simplified Surfingkeys",
   "main": "background.js",
   "directories": {
     "doc": "docs",
