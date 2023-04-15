@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Kitingkeys",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "short_name": "Rich shortcuts in vim spirit for productivity with keyboard.",
     "description": "Rich shortcuts to click links/switch tabs/scroll, capture pages, use your browser like vim for productivity.",
     "icons": {
@@ -42,17 +42,9 @@
     },
     "author": "brook hong",
     "permissions": [
-        "nativeMessaging",
         "<all_urls>",
         "tabs",
         "history",
-        "bookmarks",
-        "storage",
-        "sessions",
-        "downloads",
-        "topSites",
-        "clipboardRead",
-        "clipboardWrite"
     ],
     "background": {
         "scripts": [
