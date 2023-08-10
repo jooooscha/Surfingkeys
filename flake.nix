@@ -12,17 +12,18 @@
       defaultPackage.${system} =
         pkgs.buildNpmPackage {
           pname = "kitingkeys";
-          version = "0.0.1";
+          version = "0.1.0";
           src = ./.;
           npmDepsHash = "sha256-Z8YB7Z8S6J8rgIX1LBWPn/XVOKygQZWRiyJ5lHdt9tg=";
+
+          PUPPETEER_SKIP_DOWNLOAD = true;
+
+          # buildPhase = ''
+            # npm install
+            # npm run build
+          # '';
         };
 
-        buildPhase = ''
-          export PUPPETEER_SKIP_DOWNLOAD=1;
-
-          npm install
-          npm run build
-        '';
 
 
 
