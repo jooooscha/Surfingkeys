@@ -8,16 +8,22 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
+
+      version = "0.2.0";
     in {
       defaultPackage.${system} =
         pkgs.buildNpmPackage {
+          inherit version;
           pname = "kitingkeys";
-          version = "0.1.0";
           src = ./.;
           npmDepsHash = "sha256-nwtvcrUTACVZPbwYlSJhAEqRPgnEFy7D5PuDNs0HoLc=";
 
           PUPPETEER_SKIP_DOWNLOAD = true;
           browser = "firefox"; # env var for webpack
+
+          configurePhase = ''
+            sed -i '3i\  "version": "${version}",' package.json
+          '';
 
           buildPhase = ''
             npm install
