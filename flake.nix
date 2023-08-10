@@ -14,32 +14,20 @@
           pname = "kitingkeys";
           version = "0.1.0";
           src = ./.;
-          npmDepsHash = "sha256-Z8YB7Z8S6J8rgIX1LBWPn/XVOKygQZWRiyJ5lHdt9tg=";
+          npmDepsHash = "sha256-nwtvcrUTACVZPbwYlSJhAEqRPgnEFy7D5PuDNs0HoLc=";
 
           PUPPETEER_SKIP_DOWNLOAD = true;
+          browser = "firefox"; # env var for webpack
 
-          # buildPhase = ''
-            # npm install
-            # npm run build
-          # '';
+          buildPhase = ''
+            npm install
+            npm run build:prod
+          '';
+
+          installPhase = ''
+            mkdir $out
+            cp -r ./dist $out/dist
+          '';
         };
-
-
-
-
-        # pkgs.stdenv.mkDerivation {
-        #   name = "kitekeys";
-        #   src = ./.;
-
-        #   buildInputs = with pkgs; with nodePackages; [
-        #     npm
-        #     webpack
-        #     webpack-cli
-        #   ];
-
-        #   buildPhase = ''
-        #     npm run build:prod
-        #   '';
-        # };
     };
 }
