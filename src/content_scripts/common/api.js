@@ -8,6 +8,7 @@ import {
     constructSearchURL,
     getBrowserName,
     getClickableElements,
+    getCssSelectorsOfEditable,
     getRealEdit,
     getTextNodePos,
     getWordUnderCursor,
@@ -135,7 +136,7 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
      */
     function map(new_keystroke, old_keystroke, domain, new_annotation) {
         if (_isDomainApplicable(domain)) {
-            if (old_keystroke[0] === ':') {
+            if (old_keystroke[0] === ':' && old_keystroke.length > 1) {
                 var cmdline = old_keystroke.substr(1);
                 var keybound = createKeyTarget(function () {
                     front.executeCommand(cmdline);
@@ -280,6 +281,22 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
     function vunmap(keystroke, domain) {
         if (_isDomainApplicable(domain)) {
             visual.mappings.remove(KeyboardUtils.encodeKeystroke(keystroke));
+        }
+    }
+
+    /**
+     * Map a key sequence to another in lurk mode.
+     *
+     * @param {string} new_keystroke a key sequence to replace
+     * @param {string} old_keystroke a key sequence to be replaced
+     * @param {regex} [domain=null] a Javascript regex pattern to identify the domains that this mapping works.
+     * @param {string} [new_annotation=null] use it instead of the annotation from old_keystroke if provided.
+     *
+     * @see map
+     */
+    function lmap(new_keystroke, old_keystroke, domain, new_annotation) {
+        if (_isDomainApplicable(domain)) {
+            normal.addLurkMap(new_keystroke, old_keystroke);
         }
     }
 
@@ -536,6 +553,14 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
     mapkey('gi', '#1Go to the first edit box', function() {
         hints.createInputLayer();
     });
+    mapkey('i', '#1Go to edit box', function() {
+        hints.create(getCssSelectorsOfEditable(), hints.dispatchMouseClick);
+    });
+    mapkey('I', '#1Go to edit box with vim editor', function() {
+        hints.create(getCssSelectorsOfEditable(), function(element) {
+            front.showEditor(element);
+        });
+    });
 
     mapkey('zv', '#9Enter visual mode, and select whole element', function() {
         visual.toggle("z");
@@ -758,6 +783,7 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
         getBrowserName,
         getClickableElements,
         getFormData,
+        lmap,
         map,
         unmap,
         unmapAllExcept,

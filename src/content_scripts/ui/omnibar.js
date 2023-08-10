@@ -155,7 +155,7 @@ function createOmnibar(front, clipboard) {
                 text = fi.copy;
             } else if (fi && fi.url) {
                 text = fi.url;
-            } else {
+            } else if (_page) {
                 text = _page.map(p => {
                     return p.url;
                 }).join("\n")
@@ -1006,6 +1006,7 @@ function OpenTabs(omnibar) {
     var queryInfo = {};
     self.getResults = function () {
         omnibar.cachedPromise = new Promise(function(resolve, reject) {
+            queryInfo.tabsThreshold = Math.min(runtime.conf.tabsThreshold, Math.ceil(window.innerWidth / 26));
             RUNTIME('getTabs', queryInfo, function(response) {
                 resolve(response.tabs);
             });
@@ -1159,14 +1160,6 @@ function SearchEngine(omnibar, front) {
             _pendingRequest = undefined;
         }
     }
-
-    function formatURL(url, query) {
-        if (url.indexOf("%s") !== -1) {
-            return url.replace("%s", query);
-        }
-        return url + query;
-    }
-
     self.onOpen = function(arg) {
         Object.assign(self, self.aliases[arg]);
         var q = omnibar.input.value;
@@ -1235,7 +1228,7 @@ function SearchEngine(omnibar, front) {
         // This helps prevent rate-limits when typing a long query.
         // E.g. github.com's API rate-limits after only 10 unauthenticated requests.
         _pendingRequest = setTimeout(function() {
-            const requestUrl = formatURL(self.suggestionURL, encodeURIComponent(omnibar.input.value));
+            const requestUrl = constructSearchURL(self.suggestionURL, encodeURIComponent(omnibar.input.value));
             RUNTIME('request', {
                 method: 'get',
                 url: requestUrl

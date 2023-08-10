@@ -1,6 +1,6 @@
 {
   "name": "Kitingkeys",
-  "version": "1.12.2",
+  "version": "1.15.0",
   "description": "Simplified Surfingkeys",
   "main": "background.js",
   "directories": {
