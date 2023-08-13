@@ -73,24 +73,6 @@ export default function(
         return self;
     }
 
-    if (getBrowserName() === "Firefox") {
-        document.querySelector("#localPathForSettings").style.display = "";
-        document.querySelector("#proxySettings").style.display = "none";
-    } else if (getBrowserName().startsWith("Safari")) {
-        document.querySelector("#localPathHelpForFile").remove();
-        document.querySelector("#proxySettings").style.display = "none";
-        document.querySelector("#donationDiv").style.display = "none";
-    }
-    var proxyModeSelect = document.querySelector("#proxyMode>select");
-    var proxyGroup = document.getElementById("proxyMode").parentElement;
-    var addProxyPair = document.getElementById('addProxyPair');
-    addProxyPair.onclick = function () {
-        _updateProxy({
-            number: document.querySelectorAll('div.proxyPair').length,
-            proxy: "SOCKS5 127.0.0.1:1080"
-        });
-    };
-
     function renderAutoproxyHosts(rs, divProxyPair, number) {
         var desc = "For below hosts, above proxy will be used, click ❌ to remove one.";
         if (rs.proxyMode === "bypass") {
@@ -234,9 +216,6 @@ export default function(
         }
     }
 
-    var localPathSaved = "";
-    var localPathInput = document.getElementById("localPath");
-    var sample = document.getElementById("sample").innerHTML;
     function renderSettings(rs) {
         showAdvanced(rs.showAdvanced);
         if (rs.localPath) {
@@ -248,7 +227,6 @@ export default function(
         if (rs.snippets && rs.snippets.length) {
             mappingsEditor.setValue(rs.snippets, -1);
         } else {
-            mappingsEditor.setValue(sample, -1);
         }
 
         renderProxySettings(rs);
@@ -270,26 +248,6 @@ export default function(
                 showAdvanced: newFlag
             }
         });
-    };
-    document.getElementById('resetSettings').onclick = function() {
-        if (this.innerText === "Reset") {
-            this.innerText = "WARNING! This will clear all your settings. Click this again to continue.";
-        } else {
-            RUNTIME("resetSettings", null, function(response) {
-                renderSettings(response.settings);
-                renderKeyMappings(response.settings);
-                showBanner('Settings reset', 1000);
-            });
-        }
-    };
-
-    document.querySelector('.infoPointer').onclick = function() {
-        var f = document.getElementById(this.getAttribute("for"));
-        if (f.style.display === "none") {
-            f.style.display = "";
-        } else {
-            f.style.display = "none";
-        }
     };
 
     function getURIPath(fn) {
@@ -315,7 +273,6 @@ export default function(
                     localPathSaved = localPath;
                     mappingsEditor.setValue(res.snippets, -1);
                 } else if (settingsCode === "") {
-                    mappingsEditor.setValue(sample, -1);
                 }
             });
         } else {

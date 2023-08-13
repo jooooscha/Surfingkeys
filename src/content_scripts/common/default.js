@@ -6,6 +6,7 @@ module.exports = function(api) {
         getFormData,
         map,
         mapkey,
+        unmap,
         readText,
         tabOpenLink,
         vmapkey,
@@ -41,12 +42,6 @@ module.exports = function(api) {
     mapkey('<Alt-m>', '#3mute/unmute current tab', function() {
         RUNTIME("muteTab");
     });
-    mapkey('B', '#4Go one tab history back', function() {
-        RUNTIME("historyTab", {backward: true});
-    }, {repeatIgnore: true});
-    mapkey('F', '#4Go one tab history forward', function() {
-        RUNTIME("historyTab", {backward: false});
-    }, {repeatIgnore: true});
     mapkey('gp', '#4Go to the playing tab', function() {
         RUNTIME('getTabs', { queryInfo: {audible: true}}, response => {
             if (response.tabs?.at(0)) {
@@ -70,6 +65,9 @@ module.exports = function(api) {
     mapkey('yT', '#3Duplicate current tab in background', function() {
         RUNTIME("duplicateTab", {active: false});
     });
+
+    unmap('f');
+
     function getTableColumnHeads() {
         var tds = [];
         document.querySelectorAll("table").forEach(function(t) {
