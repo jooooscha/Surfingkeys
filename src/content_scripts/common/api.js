@@ -497,58 +497,58 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
     mapkey('?', '#0Show usage', function() {
         front.showUsage();
     });
-    mapkey('Q', '#8Open omnibar for word translation', function() {
-        front.openOmniquery({query: getWordUnderCursor(), style: "opacity: 0.8;"});
-    });
-    imapkey("<Ctrl-'>", '#15Toggle quotes in an input element', toggleQuote);
-    function openVim(useNeovim) {
-        var element = getRealEdit();
-        element.blur();
-        insert.exit();
-        front.showEditor(element, null, null, useNeovim);
-    }
+    // mapkey('Q', '#8Open omnibar for word translation', function() {
+        // front.openOmniquery({query: getWordUnderCursor(), style: "opacity: 0.8;"});
+    // });
+    // imapkey("<Ctrl-'>", '#15Toggle quotes in an input element', toggleQuote);
+    // function openVim(useNeovim) {
+        // var element = getRealEdit();
+        // element.blur();
+        // insert.exit();
+        // front.showEditor(element, null, null, useNeovim);
+    // }
     imapkey('<Ctrl-i>', '#15Open vim editor for current input', function() {
         openVim(false);
     });
-    const browserName = getBrowserName();
-    if (browserName === "Chrome") {
-        imapkey('<Ctrl-Alt-i>', '#15Open neovim for current input', function() {
-            openVim(true);
-        });
-        mapkey(';s', 'Toggle PDF viewer from SurfingKeys', function() {
-            var pdfUrl = window.location.href;
-            if (pdfUrl.indexOf(chrome.extension.getURL("/pages/pdf_viewer.html")) === 0) {
-                pdfUrl = window.location.search.substr(3);
-                chrome.storage.local.set({"noPdfViewer": 1}, function() {
-                    window.location.replace(pdfUrl);
-                });
-            } else {
-                if (document.querySelector("EMBED") && document.querySelector("EMBED").getAttribute("type") === "application/pdf") {
-                    chrome.storage.local.remove("noPdfViewer", function() {
-                        window.location.replace(pdfUrl);
-                    });
-                } else {
-                    chrome.storage.local.get("noPdfViewer", function(resp) {
-                        if(!resp.noPdfViewer) {
-                            chrome.storage.local.set({"noPdfViewer": 1}, function() {
-                                showBanner("PDF viewer disabled.");
-                            });
-                        } else {
-                            chrome.storage.local.remove("noPdfViewer", function() {
-                                showBanner("PDF viewer enabled.");
-                            });
-                        }
-                    });
-                }
-            }
-        });
-    }
+    // const browserName = getBrowserName();
+    // if (browserName === "Chrome") {
+        // imapkey('<Ctrl-Alt-i>', '#15Open neovim for current input', function() {
+            // openVim(true);
+        // });
+        // mapkey(';s', 'Toggle PDF viewer from SurfingKeys', function() {
+            // var pdfUrl = window.location.href;
+            // if (pdfUrl.indexOf(chrome.extension.getURL("/pages/pdf_viewer.html")) === 0) {
+                // pdfUrl = window.location.search.substr(3);
+                // chrome.storage.local.set({"noPdfViewer": 1}, function() {
+                    // window.location.replace(pdfUrl);
+                // });
+            // } else {
+                // if (document.querySelector("EMBED") && document.querySelector("EMBED").getAttribute("type") === "application/pdf") {
+                    // chrome.storage.local.remove("noPdfViewer", function() {
+                        // window.location.replace(pdfUrl);
+                    // });
+                // } else {
+                    // chrome.storage.local.get("noPdfViewer", function(resp) {
+                        // if(!resp.noPdfViewer) {
+                            // chrome.storage.local.set({"noPdfViewer": 1}, function() {
+                                // showBanner("PDF viewer disabled.");
+                            // });
+                        // } else {
+                            // chrome.storage.local.remove("noPdfViewer", function() {
+                                // showBanner("PDF viewer enabled.");
+                            // });
+                        // }
+                    // });
+                // }
+            // }
+        // });
+    // }
 
-    mapkey(";ql", '#0Show last action', function() {
-        showPopup(htmlEncode(runtime.conf.lastKeys.map(function(k) {
-            return KeyboardUtils.decodeKeystroke(k);
-        }).join(' → ')));
-    }, {repeatIgnore: true});
+    // mapkey(";ql", '#0Show last action', function() {
+        // showPopup(htmlEncode(runtime.conf.lastKeys.map(function(k) {
+            // return KeyboardUtils.decodeKeystroke(k);
+        // }).join(' → ')));
+    // }, {repeatIgnore: true});
 
     mapkey('gi', '#1Go to the first edit box', function() {
         hints.createInputLayer();
@@ -562,100 +562,100 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
         });
     });
 
-    mapkey('zv', '#9Enter visual mode, and select whole element', function() {
-        visual.toggle("z");
-    });
-    mapkey('yv', '#7Yank text of an element', function() {
-        hints.create(runtime.conf.textAnchorPat, function (element) {
-            clipboard.write(element[1] === 0 ? element[0].data.trim() : element[2].trim());
-        });
-    });
-    mapkey('ymv', '#7Yank text of multiple elements', function() {
-        var textToYank = [];
-        hints.create(runtime.conf.textAnchorPat, function (element) {
-            textToYank.push(element[1] === 0 ? element[0].data.trim() : element[2].trim());
-            clipboard.write(textToYank.join('\n'));
-        }, { multipleHits: true });
-    });
+    // mapkey('zv', '#9Enter visual mode, and select whole element', function() {
+        // visual.toggle("z");
+    // });
+    // mapkey('yv', '#7Yank text of an element', function() {
+        // hints.create(runtime.conf.textAnchorPat, function (element) {
+            // clipboard.write(element[1] === 0 ? element[0].data.trim() : element[2].trim());
+        // });
+    // });
+    // mapkey('ymv', '#7Yank text of multiple elements', function() {
+        // var textToYank = [];
+        // hints.create(runtime.conf.textAnchorPat, function (element) {
+            // textToYank.push(element[1] === 0 ? element[0].data.trim() : element[2].trim());
+            // clipboard.write(textToYank.join('\n'));
+        // }, { multipleHits: true });
+    // });
 
-    mapkey('V', '#9Restore visual mode', function() {
-        visual.restore();
-    });
-    mapkey('*', '#9Find selected text in current page', function() {
-        visual.star();
-        visual.toggle();
-    });
+    // mapkey('V', '#9Restore visual mode', function() {
+        // visual.restore();
+    // });
+    // mapkey('*', '#9Find selected text in current page', function() {
+        // visual.star();
+        // visual.toggle();
+    // });
 
-    vmapkey('<Ctrl-u>', '#9Backward 20 lines', function() {
-        visual.feedkeys('20k');
-    });
-    vmapkey('<Ctrl-d>', '#9Forward 20 lines', function() {
-        visual.feedkeys('20j');
-    });
+    // vmapkey('<Ctrl-u>', '#9Backward 20 lines', function() {
+        // visual.feedkeys('20k');
+    // });
+    // vmapkey('<Ctrl-d>', '#9Forward 20 lines', function() {
+        // visual.feedkeys('20j');
+    // });
 
-    mapkey('m', '#10Add current URL to vim-like marks', normal.addVIMark);
-    mapkey("'", '#10Jump to vim-like mark', normal.jumpVIMark);
-    mapkey("<Ctrl-'>", '#10Jump to vim-like mark in new tab.', function(mark) {
-        normal.jumpVIMark(mark);
-    });
+    // mapkey('m', '#10Add current URL to vim-like marks', normal.addVIMark);
+    // mapkey("'", '#10Jump to vim-like mark', normal.jumpVIMark);
+    // mapkey("<Ctrl-'>", '#10Jump to vim-like mark in new tab.', function(mark) {
+        // normal.jumpVIMark(mark);
+    // });
 
-    mapkey('w', '#2Switch frames', function() {
-        // ensure frontend ready so that ui related actions can be available in iframes.
-        dispatchSKEvent('ensureFrontEnd');
-        if (window !== top || !hints.create("iframe", function(element) {
-            element.scrollIntoView({
-                behavior: 'auto',
-                block: 'center',
-                inline: 'center'
-            });
-            normal.highlightElement(element);
-            element.contentWindow.focus();
-        })) {
-            normal.rotateFrame();
-        }
-    });
+    // mapkey('w', '#2Switch frames', function() {
+        // // ensure frontend ready so that ui related actions can be available in iframes.
+        // dispatchSKEvent('ensureFrontEnd');
+        // if (window !== top || !hints.create("iframe", function(element) {
+            // element.scrollIntoView({
+                // behavior: 'auto',
+                // block: 'center',
+                // inline: 'center'
+            // });
+            // normal.highlightElement(element);
+            // element.contentWindow.focus();
+        // })) {
+            // normal.rotateFrame();
+        // }
+    // });
 
-    mapkey('yg', '#7Capture current page', function() {
-        front.toggleStatus(false);
-        setTimeout(function() {
-            RUNTIME('captureVisibleTab', null, function(response) {
-                front.toggleStatus(true);
-                showPopup("<img src='{0}' />".format(response.dataUrl));
-            });
-        }, 500);
-    });
+    // mapkey('yg', '#7Capture current page', function() {
+        // front.toggleStatus(false);
+        // setTimeout(function() {
+            // RUNTIME('captureVisibleTab', null, function(response) {
+                // front.toggleStatus(true);
+                // showPopup("<img src='{0}' />".format(response.dataUrl));
+            // });
+        // }, 500);
+    // });
 
-    mapkey('gu', '#4Go up one path in the URL', function() {
-        var pathname = location.pathname;
-        if (pathname.length > 1) {
-            pathname = pathname.endsWith('/') ? pathname.substr(0, pathname.length - 1) : pathname;
-            var last = pathname.lastIndexOf('/'), repeats = RUNTIME.repeats;
-            RUNTIME.repeats = 1;
-            while (repeats-- > 1) {
-                var p = pathname.lastIndexOf('/', last - 1);
-                if (p === -1) {
-                    break;
-                } else {
-                    last = p;
-                }
-            }
-            pathname = pathname.substr(0, last);
-        }
-        window.location.href = location.origin + pathname;
-    });
+    // mapkey('gu', '#4Go up one path in the URL', function() {
+        // var pathname = location.pathname;
+        // if (pathname.length > 1) {
+            // pathname = pathname.endsWith('/') ? pathname.substr(0, pathname.length - 1) : pathname;
+            // var last = pathname.lastIndexOf('/'), repeats = RUNTIME.repeats;
+            // RUNTIME.repeats = 1;
+            // while (repeats-- > 1) {
+                // var p = pathname.lastIndexOf('/', last - 1);
+                // if (p === -1) {
+                    // break;
+                // } else {
+                    // last = p;
+                // }
+            // }
+            // pathname = pathname.substr(0, last);
+        // }
+        // window.location.href = location.origin + pathname;
+    // });
 
-    mapkey(';m', '#1mouse out last element', function() {
-        hints.mouseoutLastElement();
-    });
+    // mapkey(';m', '#1mouse out last element', function() {
+        // hints.mouseoutLastElement();
+    // });
 
-    mapkey(';pp', '#7Paste html on current page', function() {
-        clipboard.read(function(response) {
-            document.documentElement.removeAttributes();
-            document.body.removeAttributes();
-            setSanitizedContent(document.head, "<title>" + new Date() +" updated by Surfingkeys</title>");
-            setSanitizedContent(document.body, response.data);
-        });
-    });
+    // mapkey(';pp', '#7Paste html on current page', function() {
+        // clipboard.read(function(response) {
+            // document.documentElement.removeAttributes();
+            // document.body.removeAttributes();
+            // setSanitizedContent(document.head, "<title>" + new Date() +" updated by Surfingkeys</title>");
+            // setSanitizedContent(document.body, response.data);
+        // });
+    // });
 
     function openGoogleTranslate() {
         if (window.getSelection().toString()) {
@@ -667,40 +667,40 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
     mapkey(';t', 'Translate selected text with google', openGoogleTranslate);
     vmapkey('t', '#9Translate selected text with google', openGoogleTranslate);
 
-    mapkey('O', '#1Open detected links from text', function() {
-        hints.create(runtime.conf.clickablePat, function(element) {
-            window.location.assign(element[2]);
-        }, {statusLine: "Open detected links from text"});
-    });
+    // mapkey('O', '#1Open detected links from text', function() {
+        // hints.create(runtime.conf.clickablePat, function(element) {
+            // window.location.assign(element[2]);
+        // }, {statusLine: "Open detected links from text"});
+    // });
 
-    mapkey(".", '#0Repeat last action', function() {
-        // lastKeys in format: <keys in normal mode>[,(<mode name>\t<keys in this mode>)*], examples
-        // ['se']
-        // ['f', 'Hints\tBA']
-        const lastKeys = runtime.conf.lastKeys;
-        normal.feedkeys(lastKeys[0]);
-        var modeKeys = lastKeys.slice(1);
-        for (var i = 0; i < modeKeys.length; i++) {
-            var modeKey = modeKeys[i].split('\t');
-            if (modeKey[0] === 'Hints') {
-                function closureWrapper() {
-                    var hintKeys = modeKey[1];
-                    return function() {
-                        hints.feedkeys(hintKeys);
-                    };
-                }
-                setTimeout(closureWrapper(), 120 + i*100);
-            }
-        }
-    }, {repeatIgnore: true});
+    // mapkey(".", '#0Repeat last action', function() {
+        // // lastKeys in format: <keys in normal mode>[,(<mode name>\t<keys in this mode>)*], examples
+        // // ['se']
+        // // ['f', 'Hints\tBA']
+        // const lastKeys = runtime.conf.lastKeys;
+        // normal.feedkeys(lastKeys[0]);
+        // var modeKeys = lastKeys.slice(1);
+        // for (var i = 0; i < modeKeys.length; i++) {
+            // var modeKey = modeKeys[i].split('\t');
+            // if (modeKey[0] === 'Hints') {
+                // function closureWrapper() {
+                    // var hintKeys = modeKey[1];
+                    // return function() {
+                        // hints.feedkeys(hintKeys);
+                    // };
+                // }
+                // setTimeout(closureWrapper(), 120 + i*100);
+            // }
+        // }
+    // }, {repeatIgnore: true});
 
-    mapkey("f", '#1Open a link, press SHIFT to flip overlapped hints, hold SPACE to hide hints', function() {
-        hints.create("", hints.dispatchMouseClick);
-    }, {repeatIgnore: true});
+    // mapkey("f", '#1Open a link, press SHIFT to flip overlapped hints, hold SPACE to hide hints', function() {
+        // hints.create("", hints.dispatchMouseClick);
+    // }, {repeatIgnore: true});
 
-    mapkey("v", '#9Toggle visual mode', function() {
-        visual.toggle();
-    }, {repeatIgnore: true});
+    // mapkey("v", '#9Toggle visual mode', function() {
+        // visual.toggle();
+    // }, {repeatIgnore: true});
 
     mapkey("n", '#9Next found text', function() {
         visual.next(false);
@@ -710,65 +710,65 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
         visual.next(true);
     }, {repeatIgnore: true});
 
-    mapkey(";fs", '#1Display hints to focus scrollable elements', function() {
-        hints.create(normal.refreshScrollableElements(), hints.dispatchMouseClick);
-    });
+    // mapkey(";fs", '#1Display hints to focus scrollable elements', function() {
+        // hints.create(normal.refreshScrollableElements(), hints.dispatchMouseClick);
+    // });
 
-    vmapkey("q", '#9Translate word under cursor', function() {
-        var w = getWordUnderCursor();
-        browser.readText(w);
-        var b = visual.getCursorPixelPos();
-        front.performInlineQuery(w, {
-            top: b.top,
-            left: b.left,
-            height: b.height,
-            width: b.width
-        }, function(pos, queryResult) {
-            dispatchSKEvent('showBubble', [pos, queryResult, true]);
-        });
-    });
+    // vmapkey("q", '#9Translate word under cursor', function() {
+        // var w = getWordUnderCursor();
+        // browser.readText(w);
+        // var b = visual.getCursorPixelPos();
+        // front.performInlineQuery(w, {
+            // top: b.top,
+            // left: b.left,
+            // height: b.height,
+            // width: b.width
+        // }, function(pos, queryResult) {
+            // dispatchSKEvent('showBubble', [pos, queryResult, true]);
+        // });
+    // });
 
-    function getSentence(textNode, offset) {
-        var sentence = "";
+    // function getSentence(textNode, offset) {
+        // var sentence = "";
 
-        actionWithSelectionPreserved(function(sel) {
-            sel.setPosition(textNode, offset);
-            sel.modify("extend", "backward", "sentence");
-            sel.collapseToStart();
-            sel.modify("extend", "forward", "sentence");
+        // actionWithSelectionPreserved(function(sel) {
+            // sel.setPosition(textNode, offset);
+            // sel.modify("extend", "backward", "sentence");
+            // sel.collapseToStart();
+            // sel.modify("extend", "forward", "sentence");
 
-            sentence = sel.toString();
-        });
+            // sentence = sel.toString();
+        // });
 
-        return sentence.replace(/\n/g, '');
-    }
+        // return sentence.replace(/\n/g, '');
+    // }
 
-    mapkey("cq", '#7Query word with Hints', function() {
-        hints.create(runtime.conf.textAnchorPat, function (element) {
-            var word = element[2].trim().replace(/[^A-z].*$/, "");
-            var b = getTextNodePos(element[0], element[1], element[2].length);
-            if (document.dictEnabled !== undefined) {
-                if (document.dictEnabled) {
-                    window.postMessage({dictorium_data: {
-                        type: "OpenDictoriumQuery",
-                        word: word,
-                        sentence: getSentence(element[0], element[1]),
-                        pos: b,
-                        source: window.location.href
-                    }});
-                }
-            } else {
-                front.performInlineQuery(word, {
-                    top: b.top,
-                    left: b.left,
-                    height: b.height,
-                    width: b.width
-                }, function (pos, queryResult) {
-                    dispatchSKEvent('showBubble', [pos, queryResult, false]);
-                });
-            }
-        });
-    });
+    // mapkey("cq", '#7Query word with Hints', function() {
+        // hints.create(runtime.conf.textAnchorPat, function (element) {
+            // var word = element[2].trim().replace(/[^A-z].*$/, "");
+            // var b = getTextNodePos(element[0], element[1], element[2].length);
+            // if (document.dictEnabled !== undefined) {
+                // if (document.dictEnabled) {
+                    // window.postMessage({dictorium_data: {
+                        // type: "OpenDictoriumQuery",
+                        // word: word,
+                        // sentence: getSentence(element[0], element[1]),
+                        // pos: b,
+                        // source: window.location.href
+                    // }});
+                // }
+            // } else {
+                // front.performInlineQuery(word, {
+                    // top: b.top,
+                    // left: b.left,
+                    // height: b.height,
+                    // width: b.width
+                // }, function (pos, queryResult) {
+                    // dispatchSKEvent('showBubble', [pos, queryResult, false]);
+                // });
+            // }
+        // });
+    // });
 
     return {
         RUNTIME,
