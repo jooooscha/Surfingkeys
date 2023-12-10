@@ -501,12 +501,12 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
         // front.openOmniquery({query: getWordUnderCursor(), style: "opacity: 0.8;"});
     // });
     // imapkey("<Ctrl-'>", '#15Toggle quotes in an input element', toggleQuote);
-    // function openVim(useNeovim) {
-        // var element = getRealEdit();
-        // element.blur();
-        // insert.exit();
-        // front.showEditor(element, null, null, useNeovim);
-    // }
+    function openVim(useNeovim) {
+        var element = getRealEdit();
+        element.blur();
+        insert.exit();
+        front.showEditor(element, null, null, useNeovim);
+    }
     imapkey('<Ctrl-i>', '#15Open vim editor for current input', function() {
         openVim(false);
     });
@@ -661,7 +661,7 @@ function createAPI(clipboard, insert, normal, hints, visual, front, browser) {
         if (window.getSelection().toString()) {
             searchSelectedWith('https://translate.google.com/?hl=en#auto/en/', false, false, '');
         } else {
-            tabOpenLink("https://translate.google.com/translate?js=n&sl=auto&tl=zh-CN&u=" + window.location.href);
+            tabOpenLink("https://translate.google.com/translate?js=n&sl=auto&tl=en-US&u=" + window.location.href);
         }
     }
     mapkey(';t', 'Translate selected text with google', openGoogleTranslate);
