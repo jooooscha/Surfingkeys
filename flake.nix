@@ -9,7 +9,7 @@
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
 
-      version = "0.3.3";
+      version = "0.3.5";
 
       build = cmd: pkgs.buildNpmPackage {
         inherit version;
